@@ -58,6 +58,7 @@ class Updater {
     }
 
     private string GetSession() {
+        return "53616c7465645f5fc88f2c85fb5eef52532bca88226cc65f7d8488f75cd60f10f0aba63677950e5143b96d0da83e944b2aec125eacaec1ad997c08933770ea9a";
         if (!Environment.GetEnvironmentVariables().Contains("SESSION")) {
             throw new AocCommuncationError("Specify SESSION environment variable", null);
         }
