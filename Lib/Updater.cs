@@ -22,7 +22,7 @@ class Updater {
         var session = GetSession();
         var baseAddress = new Uri("https://adventofcode.com/");
 
-        var requester = new DefaultHttpRequester("github.com/encse/adventofcode by encse@csokavar.hu");
+        var requester = new DefaultHttpRequester();
 
         var context = BrowsingContext.New(Configuration.Default
             .With(requester)
@@ -58,11 +58,13 @@ class Updater {
     }
 
     private string GetSession() {
-        return "53616c7465645f5fc88f2c85fb5eef52532bca88226cc65f7d8488f75cd60f10f0aba63677950e5143b96d0da83e944b2aec125eacaec1ad997c08933770ea9a";
-        if (!Environment.GetEnvironmentVariables().Contains("SESSION")) {
+        // return "53616c7465645f5fc88f2c85fb5eef52532bca88226cc65f7d8488f75cd60f10f0aba63677950e5143b96d0da83e944b2aec125eacaec1ad997c08933770ea9a";
+        var variables = Environment.GetEnvironmentVariables(EnvironmentVariableTarget.User);
+        if (!Environment.GetEnvironmentVariables(EnvironmentVariableTarget.User).Contains("SESSION")) {
             throw new AocCommuncationError("Specify SESSION environment variable", null);
         }
-        return Environment.GetEnvironmentVariable("SESSION");
+        var session = Environment.GetEnvironmentVariable("SESSION", EnvironmentVariableTarget.User);
+        return session;
     }
     private IBrowsingContext GetContext() {
 
