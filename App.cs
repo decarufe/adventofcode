@@ -56,22 +56,22 @@ var action =
         var tsolversSelected = tsolvers.First(tsolver =>
             SolverExtensions.Year(tsolver) == year &&
             SolverExtensions.Day(tsolver) == day);
-        return () => Runner.RunAll(GetSolvers(tsolversSelected));
+        return () => Runner.RunAll(false, GetSolvers(tsolversSelected));
     }) ??
         Command(args, Args("[0-9]+"), m => {
             var year = int.Parse(m[0]);
             var tsolversSelected = tsolvers.Where(tsolver =>
                 SolverExtensions.Year(tsolver) == year);
-            return () => Runner.RunAll(GetSolvers(tsolversSelected.ToArray()));
+            return () => Runner.RunAll(false, GetSolvers(tsolversSelected.ToArray()));
         }) ??
     Command(args, Args("([0-9]+)/all"), m => {
         var year = int.Parse(m[0]);
         var tsolversSelected = tsolvers.Where(tsolver =>
             SolverExtensions.Year(tsolver) == year);
-        return () => Runner.RunAll(GetSolvers(tsolversSelected.ToArray()));
+        return () => Runner.RunAll(false, GetSolvers(tsolversSelected.ToArray()));
     }) ??
     Command(args, Args("all"), m => {
-        return () => Runner.RunAll(GetSolvers(tsolvers));
+        return () => Runner.RunAll(false, GetSolvers(tsolvers));
     }) ??
     Command(args, Args("today"), m => {
         var dt = DateTime.UtcNow.AddHours(-5);
@@ -82,13 +82,27 @@ var action =
                 SolverExtensions.Day(tsolver) == dt.Day);
 
             return () =>
-                Runner.RunAll(GetSolvers(tsolversSelected));
+                Runner.RunAll(false, GetSolvers(tsolversSelected));
 
         } else {
             throw new AocCommuncationError("Event is not active. This option works in Dec 1-25 only)");
         }
     }) ??
-    Command(args, Args("calendars"), _ => {
+    Command(args, Args("test", "today"), m => {
+        var dt = DateTime.UtcNow.AddHours(-5);
+        if (dt is { Month: 12, Day: >= 1 and <= 25 }) {
+
+            var tsolversSelected = tsolvers.First(tsolver =>
+                SolverExtensions.Year(tsolver) == dt.Year &&
+                SolverExtensions.Day(tsolver) == dt.Day);
+
+            return () =>
+                Runner.RunAll(true, GetSolvers(tsolversSelected));
+
+        } else {
+            throw new AocCommuncationError("Event is not active. This option works in Dec 1-25 only)");
+        }
+    }) ??    Command(args, Args("calendars"), _ => {
         return () => {
             var tsolversSelected = (
                     from tsolver in tsolvers

@@ -88,14 +88,15 @@ class Runner {
         return input;
     }
 
-    public static SolverResult RunSolver(Solver solver) {
+    public static SolverResult RunSolver(Solver solver, bool test = false) {
 
         var workingDir = solver.WorkingDir();
         var indent = "    ";
         Write(ConsoleColor.White, $"{indent}{solver.DayName()}: {solver.GetName()}");
         WriteLine();
         var dir = workingDir;
-        var file = Path.Combine(workingDir, "input.in");
+        var suffixe = test ? "-test" : "";
+        var file = Path.Combine(workingDir, $"input{suffixe}.in");
         var refoutFile = file.Replace(".in", ".refout");
         var refout = File.Exists(refoutFile) ? File.ReadAllLines(refoutFile) : null;
         var input = GetNormalizedInput(file);
@@ -135,7 +136,7 @@ class Runner {
         return new SolverResult(answers.ToArray(), errors.ToArray());
     }
 
-    public static void RunAll(params Solver[] solvers) {
+    public static void RunAll(bool test, params Solver[] solvers) {
         var errors = new List<string>();
 
         var lastYear = -1;
@@ -145,7 +146,7 @@ class Runner {
                 lastYear = solver.Year();
             }
 
-            var result = RunSolver(solver);
+            var result = RunSolver(solver, test);
             WriteLine();
             errors.AddRange(result.errors);
         }
