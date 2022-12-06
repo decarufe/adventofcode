@@ -49,6 +49,7 @@ class Updater {
         UpdateSplashScreen(calendar);
         UpdateReadmeForDay(problem);
         UpdateInput(problem);
+        UpdateInputTest(problem);
         UpdateRefout(problem);
         UpdateSolutionTemplate(problem);
     }
@@ -223,6 +224,11 @@ class Updater {
 
     void UpdateInput(Problem problem) {
         var file = Path.Combine(Dir(problem.Year, problem.Day), "input.in");
+        WriteFile(file, problem.Input);
+    }
+
+    void UpdateInputTest(Problem problem) {
+        var file = Path.Combine(Dir(problem.Year, problem.Day), "input-test.in");
         WriteFile(file, problem.Input);
     }
 

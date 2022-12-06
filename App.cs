@@ -58,12 +58,12 @@ var action =
             SolverExtensions.Day(tsolver) == day);
         return () => Runner.RunAll(false, GetSolvers(tsolversSelected));
     }) ??
-        Command(args, Args("[0-9]+"), m => {
-            var year = int.Parse(m[0]);
-            var tsolversSelected = tsolvers.Where(tsolver =>
-                SolverExtensions.Year(tsolver) == year);
-            return () => Runner.RunAll(false, GetSolvers(tsolversSelected.ToArray()));
-        }) ??
+    Command(args, Args("[0-9]+"), m => {
+        var year = int.Parse(m[0]);
+        var tsolversSelected = tsolvers.Where(tsolver =>
+            SolverExtensions.Year(tsolver) == year);
+        return () => Runner.RunAll(false, GetSolvers(tsolversSelected.ToArray()));
+    }) ??
     Command(args, Args("([0-9]+)/all"), m => {
         var year = int.Parse(m[0]);
         var tsolversSelected = tsolvers.Where(tsolver =>
@@ -88,6 +88,14 @@ var action =
             throw new AocCommuncationError("Event is not active. This option works in Dec 1-25 only)");
         }
     }) ??
+    Command(args, Args("test", "([0-9]+)/([0-9]+)"), m => {
+        var year = int.Parse(m[1]);
+        var day = int.Parse(m[2]);
+        var tsolversSelected = tsolvers.First(tsolver =>
+            SolverExtensions.Year(tsolver) == year &&
+            SolverExtensions.Day(tsolver) == day);
+        return () => Runner.RunAll(true, GetSolvers(tsolversSelected));
+     }) ??
     Command(args, Args("test", "today"), m => {
         var dt = DateTime.UtcNow.AddHours(-5);
         if (dt is { Month: 12, Day: >= 1 and <= 25 }) {
@@ -102,7 +110,8 @@ var action =
         } else {
             throw new AocCommuncationError("Event is not active. This option works in Dec 1-25 only)");
         }
-    }) ??    Command(args, Args("calendars"), _ => {
+    }) ??    
+    Command(args, Args("calendars"), _ => {
         return () => {
             var tsolversSelected = (
                     from tsolver in tsolvers
