@@ -14,9 +14,9 @@ class Solution : Solver {
 
     public object PartTwo(string input) => GetMarker(input, 14);
 
-    private int GetMarker(string input, int makerLenght) => 
-        (from pos in Enumerable.Range(makerLenght, input.Length)
-        let range = new Range(pos-makerLenght, pos)
-        where input[range].Distinct().Count() == makerLenght
-        select pos).First();
+    private int GetMarker(string input, int markerLenght) => 
+        (from pos in Enumerable.Range(markerLenght, input.Length - markerLenght)
+        let range = new Range(pos-markerLenght, pos)
+        where input[range].Distinct().Count() == markerLenght
+        select pos).Count();
 }
