@@ -10,24 +10,17 @@ namespace AdventOfCode.Y2022.Day06;
 [ProblemName("Tuning Trouble")]      
 class Solution : Solver {
 
-    public object PartOne(string input) {
-        var pos = 4;
-        while (true)
-        {
-            var range = new Range(pos-4, pos);
-            if (input[range].Distinct().Count() == 4) break;
-            pos++;
-        }
-        return pos;
-    }
+    public object PartOne(string input) => GetMarker(input, 4);
 
-    public object PartTwo(string input) {
-        var pos = 14;
-        while (true)
+    public object PartTwo(string input) => GetMarker(input, 14);
+
+    private int GetMarker(string input, int makerLenght)
+    {
+        for (int pos = makerLenght; pos < input.Length; pos++)
         {
-            var range = new Range(pos-14, pos);
-            if (input[range].Distinct().Count() == 14) break;
-            pos++;
+            var range = new Range(pos-makerLenght, pos);
+            if (input[range].Distinct().Count() == makerLenght) return pos;
         }
-        return pos;    }
+        return 0;    
+    }    
 }
