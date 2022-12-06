@@ -18,5 +18,5 @@ class Solution : Solver {
         (from pos in Enumerable.Range(markerLenght, input.Length - markerLenght)
         let range = new Range(pos-markerLenght, pos)
         where input[range].Distinct().Count() == markerLenght
-        select pos).Count();
+        select pos).First();
 }
