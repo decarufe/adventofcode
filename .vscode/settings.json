@@ -2,5 +2,11 @@
     "files.exclude": {
         "bin": true,
         "obj": true
+    },
+    "files.autoSave": "onFocusChange",
+    "launch": {
+    
+        "configurations": [],
+        "compounds": []
     }
 }

@@ -6,6 +6,8 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using System.Text;
 
+using AdventOfCode;
+
 namespace AdventOfCode.Y2022.Day05;
 
 [ProblemName("Supply Stacks")]      
@@ -53,11 +55,11 @@ class Solution : Solver {
     private void ApplyMove2(Stack<char>[] stacks, Move move)
     {
         Stack<char> cup = new();
-        for (int i = 0; i < move.Count; i++)
+        foreach (int i in 1..move.Count)
         {
             cup.Push(stacks[move.From-1].Pop());
         }
-        for (int i = 0; i < move.Count; i++)
+        foreach (int i in 1..move.Count)
         {
             stacks[move.To-1].Push(cup.Pop());
         }
