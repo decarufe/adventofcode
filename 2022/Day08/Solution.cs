@@ -32,7 +32,23 @@ class Solution : Solver {
     }
 
     public object PartTwo(string input) {
-        return 0;
+        var grid = input.SplitLine();
+
+        var score = 0;
+
+        foreach (int y in 2..(grid.Length-1))
+        {
+            foreach (int x in 2..(grid[0].Length-1))
+            {
+                var visibleLeft = VisibleDistanceLeft(grid, x, y);
+                var visibleRight = VisibleDistanceRight(grid, x, y);
+                var visibleUp = VisibleDistanceUp(grid, x, y);
+                var visibleDown = VisibleDistanceDown(grid, x, y);
+                score = Math.Max(score, visibleLeft * visibleRight * visibleUp * visibleDown);
+            }
+        }
+
+        return score;
     }
 
     private int GetGridValue(string[] grid, int x, int y)
@@ -73,49 +89,48 @@ class Solution : Solver {
 
     private int VisibleDistanceLeft(string[] grid, int x, int y)
     {
-        if (x == 1 || x == grid[0].Length || y == 1 || y == grid.Length) return true;
         var thisHeight = GetGridValue(grid, x, y);
         var maxDistance = 0;
         for (int lx = x-1; lx >= 1; lx--) 
         {
             if (GetGridValue(grid, lx, y) < thisHeight) maxDistance++;
+            else return maxDistance + 1;
         }
         return maxDistance;
     }
 
     private int VisibleDistanceRight(string[] grid, int x, int y)
     {
-        if (x == 1 || x == grid[0].Length || y == 1 || y == grid.Length) return true;
         var thisHeight = GetGridValue(grid, x, y);
         var maxDistance = 0;
         for (int lx = x+1; lx <= grid[0].Length; lx++) 
         {
             if (GetGridValue(grid, lx, y) < thisHeight) maxDistance++;
+            else return maxDistance + 1;
         }
         return maxDistance;
     }
 
-    private int VisibleDistanceTop(string[] grid, int x, int y)
+    private int VisibleDistanceUp(string[] grid, int x, int y)
     {
-        if (x == 1 || x == grid[0].Length || y == 1 || y == grid.Length) return true;
         var thisHeight = GetGridValue(grid, x, y);
         var maxDistance = 0;
         for (int ly = y-1; ly >= 1; ly--) 
         {
             if (GetGridValue(grid, x, ly) < thisHeight) maxDistance++;
-            else return maxDistance;
+            else return maxDistance + 1;
         }
         return maxDistance;
     }
     
     private int VisibleDistanceDown(string[] grid, int x, int y)
     {
-        if (x == 1 || x == grid[0].Length || y == 1 || y == grid.Length) return true;
         var thisHeight = GetGridValue(grid, x, y);
         var maxDistance = 0;
         for (int ly = y+1; ly <= grid.Length; ly++) 
         {
             if(GetGridValue(grid, x, ly) < thisHeight) maxDistance++;
+            else return maxDistance + 1;
         }
         return maxDistance;
     }
